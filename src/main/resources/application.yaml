@@ -1,6 +1,9 @@
 spring:
   application:
     name: diceware
+  web:
+    error:
+      include-message: always
 
 diceware:
   wordList: eff_large_wordlist.txt
