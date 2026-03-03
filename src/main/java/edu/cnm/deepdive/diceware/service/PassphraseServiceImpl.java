@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.diceware.service;
 
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.random.RandomGenerator;
@@ -27,5 +28,12 @@ class PassphraseServiceImpl implements PassphraseService {
       .limit(length)
       .mapToObj(wordList::get)
       .toList();
+  }
+
+  @Override
+  public List<String> shuffle(List<String> words) {
+    List<String> shuffled = new ArrayList<>(words);
+    Collections.shuffle(shuffled);
+    return shuffled;
   }
 }
