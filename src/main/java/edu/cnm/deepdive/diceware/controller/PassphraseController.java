@@ -25,7 +25,12 @@ public class PassphraseController {
   }
 
   @PostMapping(path = "/generate", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<String> post(@Max(20) @Positive @RequestParam(defaultValue = "5") int length) {
-    throw new UnsupportedOperationException("Not yet implemented");
+  public List<String> post(
+    @Max(20)
+    @Positive
+    @RequestParam(defaultValue = "5")
+    int length
+  ) {
+    return service.generate(length);
   }
 }
