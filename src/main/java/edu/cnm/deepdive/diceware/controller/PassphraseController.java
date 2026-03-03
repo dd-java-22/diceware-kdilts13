@@ -4,6 +4,7 @@ import edu.cnm.deepdive.diceware.service.PassphraseService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Positive;
 import java.util.List;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -32,5 +33,18 @@ public class PassphraseController {
     int length
   ) {
     return service.generate(length);
+  }
+
+  @PostMapping(path = "/generate", produces = MediaType.TEXT_PLAIN_VALUE)
+  public String post(
+    @Max(20)
+    @Positive
+    @RequestParam(defaultValue = "5")
+    int length,
+    @Length(max = 5)
+    @RequestParam(defaultValue = " ")
+    String delimiter
+  ) {
+    return String.join(delimiter, service.generate(length));
   }
 }
