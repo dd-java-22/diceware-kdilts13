@@ -1,0 +1,8 @@
+### test hello get request with my name
+GET http://localhost:8080/hello?
+    name=Kevin!
+Accept: application/xml;q=0.9,application/json;q=0.8
+
+### test hello get request with random input
+GET http://localhost:8080/hello?
+    name={{$random.alphanumeric(8)}}
