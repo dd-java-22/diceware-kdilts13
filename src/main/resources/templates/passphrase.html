@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns:th="http://www.thymeleaf.org"
+>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Random Passphrase</title>
+  </head>
+
+  <body>
+    <ul id="passphrase-list">
+      <li
+        th:each="word : ${words}"
+        th:text="${word}"
+      >
+        No passphrase generated
+      </li>
+    </ul>
+
+    <button id="generate-button">Generate New Passphrase</button>
+
+    <script>
+      document.getElementById('generate-button').addEventListener('click', () => {
+        fetch('/passphrases/generate', {
+          method: 'POST'
+        })
+        .then(response => response.json())
+        .then(words => {
+          const list = document.getElementById('passphrase-list');
+          list.innerHTML = '';
+          words.forEach(word => {
+            const li = document.createElement('li');
+            li.textContent = word;
+            list.appendChild(li);
+          });
+        });
+      });
+    </script>
+  </body>
+
+</html>
