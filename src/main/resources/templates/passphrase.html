@@ -21,14 +21,41 @@
 
     <button id="generate-button">Generate New Passphrase</button>
 
+    <div>
+      <button id="minus-button">-</button>
+      <span id="length-display" th:text="${length}">5</span>
+      <button id="plus-button">+</button>
+    </div>
+
     <script>
-      document.getElementById('generate-button').addEventListener('click', () => {
-        fetch('/passphrases/generate', {
+      const list = document.getElementById('passphrase-list');
+      const generateButton = document.getElementById('generate-button');
+      const minusButton = document.getElementById('minus-button');
+      const plusButton = document.getElementById('plus-button');
+      const lengthDisplay = document.getElementById('length-display');
+
+      let currentLength = parseInt(lengthDisplay.textContent);
+
+      minusButton.addEventListener('click', () => {
+        if (currentLength > 1) {
+          currentLength--;
+          lengthDisplay.textContent = currentLength;
+        }
+      });
+
+      plusButton.addEventListener('click', () => {
+        if (currentLength < 20) {
+          currentLength++;
+          lengthDisplay.textContent = currentLength;
+        }
+      });
+
+      generateButton.addEventListener('click', () => {
+        fetch(`/passphrases/generate?length=${currentLength}`, {
           method: 'POST'
         })
         .then(response => response.json())
         .then(words => {
-          const list = document.getElementById('passphrase-list');
           list.innerHTML = '';
           words.forEach(word => {
             const li = document.createElement('li');

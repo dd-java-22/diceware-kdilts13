@@ -62,6 +62,7 @@ public class PassphraseController {
     Model model
   ) {
     model.addAttribute("words", service.generate(length));
+    model.addAttribute("length", length);
 
     return "passphrase";
   }
