@@ -56,12 +56,31 @@
       }
 
       #passphrase-list li {
+        padding: 0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+      }
+
+      .word-button {
         background-color: var(--background-color);
         padding: 0.5rem 0.75rem;
         border-radius: 0.5rem;
         font-family: monospace;
         font-size: 1.1rem;
         border: 1px solid #ddd;
+        display: block;
+        width: 100%;
+        text-align: center;
+      }
+
+      .word-button:hover {
+        background-color: #eee;
+        border-color: #bbb;
+      }
+
+      .word-button:active {
+        transform: scale(0.95);
+        background-color: #ddd;
       }
 
       .controls {
@@ -149,11 +168,13 @@
       <h1>Diceware</h1>
 
       <ul id="passphrase-list">
-        <li
-          th:each="word : ${words}"
-          th:text="${word}"
-        >
-          No passphrase generated
+        <li th:each="word : ${words}">
+          <button
+            class="word-button"
+            th:text="${word}"
+          >
+            No passphrase generated
+          </button>
         </li>
       </ul>
 
@@ -198,10 +219,28 @@
           list.innerHTML = '';
           words.forEach(word => {
             const li = document.createElement('li');
-            li.textContent = word;
+            const button = document.createElement('button');
+            button.classList.add('word-button');
+            button.textContent = word;
+            li.appendChild(button);
             list.appendChild(li);
           });
         });
+      });
+
+      list.addEventListener('click', (event) => {
+        const button = event.target.closest('.word-button');
+        if (button) {
+          fetch('/passphrases/generate?length=1', {
+            method: 'POST'
+          })
+          .then(response => response.json())
+          .then(words => {
+            if (words && words.length > 0) {
+              button.textContent = words[0];
+            }
+          });
+        }
       });
     </script>
   </body>
