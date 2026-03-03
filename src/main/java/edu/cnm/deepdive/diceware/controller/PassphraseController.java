@@ -2,7 +2,7 @@ package edu.cnm.deepdive.diceware.controller;
 
 import edu.cnm.deepdive.diceware.service.PassphraseService;
 import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class PassphraseController {
   @ResponseBody
   public List<String> post(
     @Max(20)
-    @Positive
+    @PositiveOrZero
     @RequestParam(defaultValue = "5")
     int length
   ) {
@@ -43,7 +43,7 @@ public class PassphraseController {
   @ResponseBody
   public String post(
     @Max(20)
-    @Positive
+    @PositiveOrZero
     @RequestParam(defaultValue = "5")
     int length,
     @Length(max = 5)
@@ -56,7 +56,7 @@ public class PassphraseController {
   @GetMapping(path = "/passphrase")
   public String get(
     @Max(20)
-    @Positive
+    @PositiveOrZero
     @RequestParam(defaultValue = "5")
     int length,
     Model model

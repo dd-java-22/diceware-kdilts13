@@ -73,17 +73,28 @@
 
       .length-picker {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 1rem;
+        gap: 0.5rem;
         background: var(--background-color);
-        padding: 0.5rem 1rem;
-        border-radius: 2rem;
+        padding: 1rem 1.5rem;
+        border-radius: 1rem;
+        width: 100%;
+        box-sizing: border-box;
       }
 
-      #length-display {
+      .length-info {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
         font-weight: bold;
-        font-size: 1.2rem;
-        min-width: 2rem;
+        color: var(--primary-color);
+      }
+
+      #length-slider {
+        width: 100%;
+        cursor: pointer;
+        accent-color: var(--primary-color);
       }
 
       button {
@@ -148,9 +159,17 @@
 
       <div class="controls">
         <div class="length-picker">
-          <button id="minus-button" class="icon-button">-</button>
-          <span id="length-display" th:text="${length}">5</span>
-          <button id="plus-button" class="icon-button">+</button>
+          <div class="length-info">
+            <span>Length:</span>
+            <span id="length-display" th:text="${length}">5</span>
+          </div>
+          <input
+            type="range"
+            id="length-slider"
+            min="0"
+            max="20"
+            th:value="${length}"
+          >
         </div>
 
         <button id="generate-button">Generate New Passphrase</button>
@@ -160,24 +179,14 @@
     <script>
       const list = document.getElementById('passphrase-list');
       const generateButton = document.getElementById('generate-button');
-      const minusButton = document.getElementById('minus-button');
-      const plusButton = document.getElementById('plus-button');
+      const lengthSlider = document.getElementById('length-slider');
       const lengthDisplay = document.getElementById('length-display');
 
-      let currentLength = parseInt(lengthDisplay.textContent);
+      let currentLength = parseInt(lengthSlider.value);
 
-      minusButton.addEventListener('click', () => {
-        if (currentLength > 1) {
-          currentLength--;
-          lengthDisplay.textContent = currentLength;
-        }
-      });
-
-      plusButton.addEventListener('click', () => {
-        if (currentLength < 20) {
-          currentLength++;
-          lengthDisplay.textContent = currentLength;
-        }
+      lengthSlider.addEventListener('input', (event) => {
+        currentLength = event.target.value;
+        lengthDisplay.textContent = currentLength;
       });
 
       generateButton.addEventListener('click', () => {
